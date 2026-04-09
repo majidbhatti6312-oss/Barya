@@ -5,19 +5,31 @@
 
 import React, { useState, useEffect } from 'react';
 import { App as CapApp } from '@capacitor/app';
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { StatusBar } from '@capacitor/status-bar';
 import { ThemeProvider } from './components/ThemeProvider';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Reading } from './components/Reading';
 import { Settings } from './components/Settings';
 import { About } from './components/About';
+import { SplashScreen } from './components/SplashScreen';
+import { Onboarding } from './components/Onboarding';
+import { ExitDialog } from './components/ExitDialog';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<'home' | 'reading' | 'settings' | 'about'>('home');
   const [selectedSectionId, setSelectedSectionId] = useState<number | undefined>(undefined);
+  const [showSplash, setShowSplash] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showExitDialog, setShowExitDialog] = useState(false);
 
   useEffect(() => {
+    // Check if onboarding was already shown
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
+    }
+
     // Configure Status Bar
     const setupStatusBar = async () => {
       try {
@@ -36,7 +48,7 @@ export default function App() {
       } else if (selectedSectionId !== undefined) {
         setSelectedSectionId(undefined);
       } else {
-        CapApp.exitApp();
+        setShowExitDialog(true);
       }
     });
 
@@ -44,6 +56,11 @@ export default function App() {
       backListener.then(l => l.remove());
     };
   }, [currentScreen, selectedSectionId]);
+
+  const handleOnboardingFinish = () => {
+    localStorage.setItem('hasSeenOnboarding', 'true');
+    setShowOnboarding(false);
+  };
 
   const handleRead = (id?: number) => {
     setSelectedSectionId(id);
@@ -67,6 +84,9 @@ export default function App() {
 
   return (
     <ThemeProvider>
+      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
+      {showOnboarding && !showSplash && <Onboarding onFinish={handleOnboardingFinish} />}
+      
       <Layout 
         currentScreen={currentScreen} 
         onScreenChange={(screen) => {
@@ -76,6 +96,8 @@ export default function App() {
       >
         {renderScreen()}
       </Layout>
+
+      <ExitDialog isOpen={showExitDialog} onClose={() => setShowExitDialog(false)} />
     </ThemeProvider>
   );
 }
