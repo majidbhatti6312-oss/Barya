@@ -31,7 +31,8 @@ export const Home: React.FC<{ onRead: (id: number) => void }> = ({ onRead }) => 
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center text-white"
+            onClick={() => onRead(content.sections[activeSlide].id)}
+            className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center text-white cursor-pointer"
             style={{ background: theme.gradient }}
           >
             <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2">

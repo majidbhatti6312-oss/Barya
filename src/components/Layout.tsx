@@ -4,7 +4,6 @@ import { Menu, X, Home, BookOpen, Settings, Info, Moon, Sun } from 'lucide-react
 import { useTheme } from './ThemeProvider';
 import { MENU_ITEMS } from '../constants';
 import { cn } from '../lib/utils';
-import { GeometricPattern } from './GeometricPattern';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -28,9 +27,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onScree
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
-      {/* Background Pattern */}
-      <GeometricPattern className="absolute inset-0 z-0 pointer-events-none" />
-
       {/* AppBar */}
       <header 
         className={cn(
