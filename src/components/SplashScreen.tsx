@@ -29,8 +29,8 @@ export const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) =
         transition={{ delay: 0.5 }}
         className="text-center"
       >
-        <h1 className="text-4xl font-bold mb-2" style={{ color: theme.primary }}>د بریا راز</h1>
-        <p className="text-gray-500 dark:text-gray-400 tracking-widest uppercase text-sm">Pashto Premium Edition</p>
+        <h1 className="text-4xl font-bold mb-2" style={{ color: theme.primary }}>د اسلامي امارت د بریا راز</h1>
+        <p className="text-gray-500 dark:text-gray-400 tracking-widest uppercase text-sm">The Secret of the Islamic Emirate's Success</p>
       </motion.div>
 
       <div className="absolute bottom-12 w-48 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
