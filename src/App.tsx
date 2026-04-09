@@ -15,6 +15,29 @@ import { About } from './components/About';
 import { SplashScreen } from './components/SplashScreen';
 import { Onboarding } from './components/Onboarding';
 import { ExitDialog } from './components/ExitDialog';
+import { useTheme } from './components/ThemeProvider';
+
+const StatusBarManager = () => {
+  const { theme, isDarkMode } = useTheme();
+
+  useEffect(() => {
+    const updateStatusBar = async () => {
+      try {
+        // Disable overlay to allow setting a solid background color
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        // Set background color to match theme primary
+        await StatusBar.setBackgroundColor({ color: theme.primary });
+        // Set style (icons color)
+        await StatusBar.setStyle({ style: 'DARK' as any }); 
+      } catch (e) {
+        console.warn('StatusBar plugin not available');
+      }
+    };
+    updateStatusBar();
+  }, [theme, isDarkMode]);
+
+  return null;
+};
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<'home' | 'reading' | 'settings' | 'about'>('home');
@@ -29,16 +52,6 @@ export default function App() {
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
     }
-
-    // Configure Status Bar
-    const setupStatusBar = async () => {
-      try {
-        await StatusBar.setOverlaysWebView({ overlay: true });
-      } catch (e) {
-        console.warn('StatusBar plugin not available');
-      }
-    };
-    setupStatusBar();
 
     // Handle Back Button
     const backListener = CapApp.addListener('backButton', ({ canGoBack }) => {
@@ -84,6 +97,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
+      <StatusBarManager />
       {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
       {showOnboarding && !showSplash && <Onboarding onFinish={handleOnboardingFinish} />}
       
