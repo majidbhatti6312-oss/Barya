@@ -34,24 +34,25 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onScree
       {/* AppBar */}
       <header 
         className={cn(
-          "sticky top-0 z-40 px-4 py-4 flex items-center justify-between backdrop-blur-md transition-all duration-300 pt-[calc(1rem+env(safe-area-inset-top))]",
-          isDarkMode ? "bg-black/50 border-b border-white/10" : "bg-white/50 border-b border-black/5"
+          "sticky top-0 z-40 px-4 py-4 flex items-center justify-between shadow-lg transition-all duration-300 pt-[calc(1rem+env(safe-area-inset-top))]",
+          isDarkMode ? "border-b border-white/10 shadow-black/20" : "border-b border-black/5 shadow-black/5"
         )}
+        style={{ background: theme.gradient }}
       >
         <button 
           onClick={() => setIsDrawerOpen(true)}
-          className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          className="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors"
         >
           <Menu size={24} />
         </button>
         
-        <h1 className="text-xl font-bold tracking-tight" style={{ color: theme.primary }}>
+        <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-md">
           د بریا راز
         </h1>
 
         <button 
           onClick={toggleDarkMode}
-          className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          className="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors"
         >
           {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
         </button>
