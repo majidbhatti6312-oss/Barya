@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { PASHTO_CONTENT } from '../constants';
 import { useTheme } from './ThemeProvider';
-import { SoftButton, SoftCard } from './SoftUI';
+import { SoftButton } from './SoftUI';
 import { Maximize2, Minimize2, ArrowRight } from 'lucide-react';
 
 export const Reading: React.FC<{ selectedId?: number, onBack: () => void }> = ({ selectedId, onBack }) => {
-  const { theme, isDarkMode } = useTheme();
+  const { theme } = useTheme();
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [content, setContent] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/src/assets/data.json')
+      .then(res => res.json())
+      .then(data => setContent(data))
+      .catch(err => console.error("Error loading JSON:", err));
+  }, []);
+
+  if (!content) return <div className="p-8 text-center opacity-50">د معلوماتو بارول...</div>;
 
   const section = selectedId 
-    ? PASHTO_CONTENT.sections.find(s => s.id === selectedId) 
+    ? content.sections.find((s: any) => s.id === selectedId) 
     : null;
 
   return (
@@ -34,7 +43,7 @@ export const Reading: React.FC<{ selectedId?: number, onBack: () => void }> = ({
           className="max-w-2xl mx-auto"
         >
           <h1 className="text-3xl font-bold mb-6 text-center leading-tight" style={{ color: theme.primary }}>
-            {section ? section.title : PASHTO_CONTENT.title}
+            {section ? section.title : content.title}
           </h1>
 
           <div className="space-y-6 text-lg leading-loose opacity-90 text-justify">
@@ -42,12 +51,12 @@ export const Reading: React.FC<{ selectedId?: number, onBack: () => void }> = ({
               <p>{section.content}</p>
             ) : (
               <>
-                <p className="font-bold text-xl italic opacity-100">{PASHTO_CONTENT.subtitle}</p>
-                {PASHTO_CONTENT.introduction.split('\n\n').map((p, i) => (
+                <p className="font-bold text-xl italic opacity-100">{content.subtitle}</p>
+                {content.introduction.split('\n\n').map((p: string, i: number) => (
                   <p key={i}>{p}</p>
                 ))}
                 <div className="py-8 space-y-12">
-                  {PASHTO_CONTENT.sections.map((s) => (
+                  {content.sections.map((s: any) => (
                     <div key={s.id} className="space-y-4">
                       <h2 className="text-2xl font-bold border-r-4 pr-4" style={{ borderColor: theme.accent }}>
                         {s.id}. {s.title}
@@ -58,7 +67,7 @@ export const Reading: React.FC<{ selectedId?: number, onBack: () => void }> = ({
                 </div>
                 <div className="pt-12 border-t border-black/5 dark:border-white/5">
                   <h2 className="text-2xl font-bold mb-4">پایله</h2>
-                  <p>{PASHTO_CONTENT.conclusion}</p>
+                  <p>{content.conclusion}</p>
                 </div>
               </>
             )}

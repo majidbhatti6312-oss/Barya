@@ -1,55 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { SoftCard } from './SoftUI';
-import { PASHTO_CONTENT } from '../constants';
 import { useTheme } from './ThemeProvider';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { ChevronLeft, Star } from 'lucide-react';
 
 export const Home: React.FC<{ onRead: (id: number) => void }> = ({ onRead }) => {
-  const { theme, isDarkMode } = useTheme();
+  const { theme } = useTheme();
   const [activeSlide, setActiveSlide] = useState(0);
-
-  const featuredSections = PASHTO_CONTENT.sections.slice(0, 3);
+  const [content, setContent] = useState<any>(null);
 
   useEffect(() => {
+    fetch('/src/assets/data.json')
+      .then(res => res.json())
+      .then(data => setContent(data))
+      .catch(err => console.error("Error loading JSON:", err));
+  }, []);
+
+  useEffect(() => {
+    if (!content) return;
     const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % featuredSections.length);
-    }, 2000);
+      setActiveSlide((prev) => (prev + 1) % content.sections.length);
+    }, 10000); // 10 seconds interval
     return () => clearInterval(timer);
-  }, [featuredSections.length]);
+  }, [content]);
+
+  if (!content) return <div className="p-8 text-center opacity-50">د معلوماتو بارول...</div>;
 
   return (
     <div className="p-4 flex flex-col gap-6 pb-20">
-      {/* Featured Slider */}
-      <section className="relative h-48 rounded-3xl overflow-hidden soft-shadow dark:soft-shadow-dark">
+      {/* Featured Slider (Feature) */}
+      <section className="relative h-64 rounded-[32px] overflow-hidden shadow-2xl">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSlide}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0 flex flex-col justify-end p-6 text-white"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            className="absolute inset-0 flex flex-col justify-center items-center p-8 text-center text-white"
             style={{ background: theme.gradient }}
           >
-            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1">
-              <Star size={12} fill="currentColor" />
+            <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2">
+              <Star size={14} fill="currentColor" />
               <span>غوره برخه</span>
             </div>
-            <h3 className="text-2xl font-bold mb-1">{featuredSections[activeSlide].title}</h3>
-            <p className="text-sm opacity-80 line-clamp-1">{featuredSections[activeSlide].content}</p>
+            
+            <motion.h3 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-3xl font-black mb-4 leading-tight drop-shadow-lg"
+            >
+              {content.sections[activeSlide].title}
+            </motion.h3>
+            
+            <motion.p 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-lg opacity-90 leading-relaxed line-clamp-3 max-w-md"
+            >
+              {content.sections[activeSlide].content}
+            </motion.p>
           </motion.div>
         </AnimatePresence>
         
         {/* Dots */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {featuredSections.map((_, i) => (
-            <div 
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
+          {content.sections.map((_, i) => (
+            <button 
               key={i} 
-              className="h-1.5 rounded-full transition-all duration-300"
+              onClick={() => setActiveSlide(i)}
+              className="h-2 rounded-full transition-all duration-500"
               style={{ 
-                width: activeSlide === i ? '24px' : '8px',
-                backgroundColor: activeSlide === i ? 'white' : 'rgba(255,255,255,0.4)'
+                width: activeSlide === i ? '32px' : '8px',
+                backgroundColor: activeSlide === i ? 'white' : 'rgba(255,255,255,0.3)'
               }}
             />
           ))}
@@ -57,42 +82,42 @@ export const Home: React.FC<{ onRead: (id: number) => void }> = ({ onRead }) => 
       </section>
 
       {/* Introduction */}
-      <SoftCard className="bg-opacity-50">
+      <SoftCard className="bg-opacity-50 border-r-4" style={{ borderRightColor: theme.primary }}>
         <h2 className="text-xl font-bold mb-3" style={{ color: theme.primary }}>
-          {PASHTO_CONTENT.title}
+          {content.title}
         </h2>
-        <p className="text-sm leading-relaxed opacity-80">
-          {PASHTO_CONTENT.introduction.split('\n')[0]}
+        <p className="text-sm leading-loose opacity-80 text-justify">
+          {content.introduction}
         </p>
       </SoftCard>
 
       {/* Grid Sections */}
       <div className="grid grid-cols-1 gap-4">
         <h3 className="text-lg font-bold px-2" style={{ color: theme.primary }}>ټولې برخې</h3>
-        {PASHTO_CONTENT.sections.map((section, index) => (
+        {content.sections.map((section: any, index: number) => (
           <motion.div
             key={section.id}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
           >
             <SoftCard 
               onClick={() => onRead(section.id)}
-              className="flex items-center justify-between group"
+              className="flex items-center justify-between group py-5"
             >
               <div className="flex items-center gap-4">
                 <div 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
                   style={{ background: theme.gradient }}
                 >
                   {section.id}
                 </div>
                 <div>
-                  <h4 className="font-bold">{section.title}</h4>
+                  <h4 className="font-bold text-lg">{section.title}</h4>
                   <p className="text-xs opacity-50">د بریا {section.id} عامل</p>
                 </div>
               </div>
-              <ChevronLeft className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ChevronLeft className="opacity-30 group-hover:opacity-100 transition-opacity" />
             </SoftCard>
           </motion.div>
         ))}
