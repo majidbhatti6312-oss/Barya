@@ -3,18 +3,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SoftCard } from './SoftUI';
 import { useTheme } from './ThemeProvider';
 import { ChevronLeft, Star } from 'lucide-react';
+import contentData from '../assets/data.json';
 
 export const Home: React.FC<{ onRead: (id: number) => void }> = ({ onRead }) => {
   const { theme } = useTheme();
   const [activeSlide, setActiveSlide] = useState(0);
-  const [content, setContent] = useState<any>(null);
-
-  useEffect(() => {
-    fetch('/src/assets/data.json')
-      .then(res => res.json())
-      .then(data => setContent(data))
-      .catch(err => console.error("Error loading JSON:", err));
-  }, []);
+  const content = contentData;
 
   useEffect(() => {
     if (!content) return;

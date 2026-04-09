@@ -3,18 +3,12 @@ import { motion } from 'motion/react';
 import { useTheme } from './ThemeProvider';
 import { SoftButton } from './SoftUI';
 import { Maximize2, Minimize2, ArrowRight } from 'lucide-react';
+import contentData from '../assets/data.json';
 
 export const Reading: React.FC<{ selectedId?: number, onBack: () => void }> = ({ selectedId, onBack }) => {
   const { theme } = useTheme();
   const [isFocusMode, setIsFocusMode] = useState(false);
-  const [content, setContent] = useState<any>(null);
-
-  useEffect(() => {
-    fetch('/src/assets/data.json')
-      .then(res => res.json())
-      .then(data => setContent(data))
-      .catch(err => console.error("Error loading JSON:", err));
-  }, []);
+  const content = contentData;
 
   if (!content) return <div className="p-8 text-center opacity-50">د معلوماتو بارول...</div>;
 
