@@ -34,7 +34,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onScree
       {/* AppBar */}
       <header 
         className={cn(
-          "sticky top-0 z-40 px-4 py-4 flex items-center justify-between shadow-lg transition-all duration-300 pt-[calc(1rem+env(safe-area-inset-top))]",
+          "sticky top-0 z-40 px-4 py-4 flex items-center justify-between shadow-lg transition-all duration-300",
           isDarkMode ? "border-b border-white/10 shadow-black/20" : "border-b border-black/5 shadow-black/5"
         )}
         style={{ background: theme.gradient }}
