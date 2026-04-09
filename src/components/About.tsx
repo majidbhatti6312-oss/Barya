@@ -25,8 +25,8 @@ export const About: React.FC = () => {
             <Info size={24} />
           </div>
           <div>
-            <h3 className="font-bold">د اپلیکیشن په اړه</h3>
-            <p className="text-sm opacity-60">دا اپلیکیشن د افغانستان د تاریخي بریاوو د تحلیل لپاره جوړ شوی دی.</p>
+            <h3 className="font-bold">کاريال جوړوونکی: عبیدالله غفاري</h3>
+            <p className="text-sm opacity-60">ترتيب کوونکی : الحاج ډاکټر فريدون احرار</p>
           </div>
         </div>
       </SoftCard>
@@ -37,8 +37,8 @@ export const About: React.FC = () => {
             <Heart size={24} />
           </div>
           <div>
-            <h3 className="font-bold">زموږ هدف</h3>
-            <p className="text-sm opacity-60">زموږ هدف د معنوي او مادي ارزښتونو په اړه د ولس پوهاوی دی.</p>
+            <h3 className="font-bold">نشروونکې اداره</h3>
+            <p className="text-sm opacity-60">د اسلامي کاريالونو څانګه</p>
           </div>
         </div>
       </SoftCard>
@@ -49,8 +49,8 @@ export const About: React.FC = () => {
             <Globe size={24} />
           </div>
           <div>
-            <h3 className="font-bold">اړیکه</h3>
-            <p className="text-sm opacity-60">info@afghanistan.af</p>
+            <h3 className="font-bold">واټساپ شميره</h3>
+            <p className="text-sm opacity-60" dir="ltr">0779705897</p>
           </div>
         </div>
       </SoftCard>
