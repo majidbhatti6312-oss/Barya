@@ -94,7 +94,7 @@ export const PASHTO_CONTENT = {
 
 export const MENU_ITEMS = [
   { id: 'home', label: 'کور پاڼه' },
-  { id: 'reading', label: 'نښه شوی' },
+  { id: 'reading', label: 'ټوله مقاله لوستل' },
   { id: 'settings', label: 'تنظیمات' },
   { id: 'about', label: 'په اړه' },
 ];
