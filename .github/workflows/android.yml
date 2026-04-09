@@ -20,18 +20,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
-          # د Capacitor اړین کتابتونونه انسټالول
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets @capacitor/share @capacitor/filesystem
+          # د --legacy-peer-deps کارول د نسخو د ټکر مخه نیسي
+          npm install --legacy-peer-deps
 
       - name: Build Web App
         run: npm run build
 
       - name: Sync with Capacitor
         run: |
-          # د عمرې لارښود نوم او خپل Package ID مو ورکړ
-          npx cap init "د عمرې لارښود" "com.amanmedia.umrah" --web-dir dist
-          npx cap add android
+          # نوي init ته اړتیا نشته ځکه ما فایلونه جوړ کړي
+          npx cap add android || true
           npx cap sync android
 
       # ۲. د آیکن برخه (اصلاح شوې)
@@ -86,4 +84,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Umrah-Guide-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk 
+          
