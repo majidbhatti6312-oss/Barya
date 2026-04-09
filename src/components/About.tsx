@@ -57,4 +57,3 @@ export const About: React.FC = () => {
     </div>
   );
 };
-
