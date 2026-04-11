@@ -6,8 +6,8 @@ import { SoftButton } from './SoftUI';
 
 const SLIDES = [
   {
-    title: "ښه راغلاست",
-    description: "د بریا راز اپلیکیشن ته ښه راغلاست. دلته به تاسو د افغانستان د تاریخي بریاوو په اړه ولولئ.",
+    title: "د افغانستان د اسلامي امارت د بريا",
+    description: "تحليلي او مسلکي مقاله",
     icon: <Shield size={80} />,
     color: "#3B82F6"
   },
